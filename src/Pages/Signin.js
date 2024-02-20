@@ -1,5 +1,5 @@
   import React, { useState } from 'react'
-  import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+  import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
   import { app } from '../firebase/config';
   import { useNavigate } from 'react-router-dom';
   
@@ -12,7 +12,7 @@
     const handleSignIn = (event) => {
       event.preventDefault();
       const auth = getAuth(app);
-      createUserWithEmailAndPassword(auth, email, password)
+      signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           // Signed in 
           const user = userCredential.user;
