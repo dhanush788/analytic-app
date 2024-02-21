@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import React, { useState } from 'react';
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { app } from '../firebase/config';
 import { useNavigate } from 'react-router-dom';
-
 
 export default function Signup() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [displayName, setDisplayName] = useState('');
   const navigate = useNavigate(); 
 
   const handleSignUp = (event) => {
@@ -17,17 +17,25 @@ export default function Signup() {
         // Signed in 
         const user = userCredential.user;
         console.log('User:', user);
-        navigate('/')
-        // ...
+        // Update the display name
+        updateProfile(auth.currentUser, {
+          displayName: displayName,
+          isEmailVerified: true
+        })
+        .then(() => {
+          console.log('Display name updated successfully!');
+          navigate('/');
+        })
+        .catch((error) => {
+          console.error('Error updating display name:', error);
+        });
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log('Error Code:', errorCode);
         console.log('Error Message:', errorMessage);
-        // ..
       });
-      
   }
 
   return (
@@ -50,6 +58,23 @@ export default function Signup() {
             <div className="mt-10">
               <div>
                 <form className="space-y-6">
+                  <div>
+                    <label htmlFor="displayName" className="block text-sm font-medium leading-6 text-gray-900">
+                      Name
+                    </label>
+                    <div className="mt-2">
+                      <input
+                        id="displayName"
+                        name="displayName"
+                        type="text"
+                        autoComplete="displayName"
+                        required
+                        onChange={(e) => setDisplayName(e.target.value)}
+                        className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      />
+                    </div>
+                  </div>
+
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                       Email address
@@ -96,7 +121,6 @@ export default function Signup() {
                         Remember me
                       </label>
                     </div>
-
                   </div>
 
                   <div>
@@ -104,13 +128,11 @@ export default function Signup() {
                       onClick={(event) => handleSignUp(event)}
                       className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
-                      Sign in
+                      Sign up
                     </button>
                   </div>
                 </form>
               </div>
-
-
             </div>
           </div>
         </div>
