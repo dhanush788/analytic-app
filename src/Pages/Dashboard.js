@@ -10,6 +10,7 @@ import {auth} from '../firebase/config'
 import Sidebar from '../component/Sidebar'
 import Searchbar from '../component/Searchbar'
 import SecNav from '../component/SecNav'
+import Form from '../component/Form'
 
 // Define color palette
 const colors = {
@@ -71,6 +72,7 @@ export default function Dashboard() {
             <header>
               {/* Secondary navigation */}
               <SecNav secondaryNavigation={secondaryNavigation} />
+              <Form/>
             </header>
           </main>
         </div>
