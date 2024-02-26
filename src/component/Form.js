@@ -30,9 +30,8 @@ export default function Form() {
       encodedPairs.push(`${encodedKey}=${encodedValue}`);
     }
       const encodedFormData = encodedPairs.join('&');
-      const encryptedFormData = btoa(encodedFormData);
-      console.log(form.current)
-
+      const encryptedFormData = btoa(encodedFormData.toString());
+      console.log(encryptedFormData);
 
       // emailjs
       // .sendForm('service_j7phaji', 'template_djttdck', form.current, {

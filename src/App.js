@@ -5,6 +5,7 @@ import SignIn from './Pages/Signin';
 import { auth } from './firebase/config';
 import Dashboard from './Pages/Dashboard';
 import Signup from './Pages/Signup';
+import Signuser from './Pages/Signuser';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -31,6 +32,7 @@ function App() {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="*" element={<h1>Not Found</h1>} />
+          <Route path="/signuser/:id" element={<Signuser />} />
         </Routes>
       </BrowserRouter>
     </div>
