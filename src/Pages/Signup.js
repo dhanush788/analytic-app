@@ -16,14 +16,12 @@ export default function Signup() {
       .then((userCredential) => {
         // Signed in 
         const user = userCredential.user;
-        console.log('User:', user);
         // Update the display name
         updateProfile(auth.currentUser, {
           displayName: displayName,
           isEmailVerified: true
         })
         .then(() => {
-          console.log('Display name updated successfully!');
           navigate('/');
         })
         .catch((error) => {

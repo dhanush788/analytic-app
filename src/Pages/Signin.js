@@ -16,7 +16,6 @@ export default function Signin() {
       .then((userCredential) => {
         // Signed in 
         const user = userCredential.user;
-        console.log('User:', user);
         navigate('/');
         // Clear any previous error
         setError('');

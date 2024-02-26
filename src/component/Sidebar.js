@@ -53,7 +53,6 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-console.log(Children)
 
 export default function Sidebar({sidebarOpen , setSidebarOpen}) {
   return (
