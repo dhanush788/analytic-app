@@ -62,10 +62,10 @@ export default function Dashboard() {
   return (
     <>
       <div>
-        <Sidebar/>
+        <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}/>
         <div className="xl:pl-72">
           {/* Sticky search header */}
-          <Searchbar/>
+          <Searchbar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}/>
 
 
           <main>

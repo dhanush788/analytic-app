@@ -55,9 +55,7 @@ function classNames(...classes) {
 
 console.log(Children)
 
-export default function Sidebar(props) {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
-  console.log(auth.currentUser)
+export default function Sidebar({sidebarOpen , setSidebarOpen}) {
   return (
     <>
 
