@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 const Signuser = () => {
 
     const [error, setError] = useState(false);
+    const [message, setMessage] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate(); 
@@ -29,13 +30,13 @@ const Signuser = () => {
     const handleSignUp = (event) => {
         event.preventDefault();
         const auth = getAuth(app);
-        createUserWithEmailAndPassword(auth, "dhanushpk51@gmail.com", password)
+        createUserWithEmailAndPassword(auth, username + "@analytics.com", password)
           .then((userCredential) => {
             // Signed in 
             const user = userCredential.user;
             // Update the display name
             updateProfile(auth.currentUser, {
-              displayName: "Dhanush",
+              displayName: username,
               isEmailVerified: false
             })
             .then(() => {
@@ -50,6 +51,7 @@ const Signuser = () => {
             const errorMessage = error.message;
             console.log('Error Code:', errorCode);
             console.log('Error Message:', errorMessage);
+            setMessage(errorMessage);
           });
       }
 
@@ -72,7 +74,7 @@ const Signuser = () => {
                       <form className="space-y-6">
                         <div>
                           <label htmlFor="displayName" className="block text-sm font-medium leading-6 text-gray-900">
-                            Name
+                            Username
                           </label>
                           <div className="mt-2">
                             <input
@@ -81,7 +83,7 @@ const Signuser = () => {
                               type="text"
                               autoComplete="displayName"
                               required
-                              value="Dhanush"
+                              value={username}
                               className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             />
                           </div>
@@ -98,7 +100,7 @@ const Signuser = () => {
                               type="email"
                               autoComplete="email"
                               required
-                              value="dhanushpk50@gmail.com"
+                              value={username + '@analytics.com'}
                               className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             />
                           </div>
@@ -142,6 +144,8 @@ const Signuser = () => {
                           >
                             Sign up
                           </button>
+                          {message && <div className="text-red-500">{message}</div>} {/* Display error message if exists */}
+
                         </div>
                       </form>
                     </div>
