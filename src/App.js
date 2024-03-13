@@ -29,7 +29,7 @@ function App() {
     <div>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={user ? (auth.currentUser.emailVerified ? <Dashboard /> : (<DashboardUser/>) ): <Navigate to="/signin" />} />
+          <Route path="/" element={user ? (auth.currentUser.phoneNumber ? <Dashboard /> : (<DashboardUser/>) ): <Navigate to="/signin" />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="*" element={<h1>Not Found</h1>} />

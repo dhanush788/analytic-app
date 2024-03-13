@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { app } from '../firebase/config';
 import { useNavigate } from 'react-router-dom';
+import { getDatabase, ref, set } from "firebase/database";
 
 export default function Signup() {
   const [email, setEmail] = useState('');
@@ -19,10 +20,23 @@ export default function Signup() {
         // Update the display name
         updateProfile(auth.currentUser, {
           displayName: displayName,
-          isEmailVerified: true
         })
         .then(() => {
-          navigate('/');
+          // Store additional user information (e.g., phone number) in a database
+          const userId = user.uid;
+          const userData = {
+            displayName: displayName,
+            user : 'admin'
+          };
+          // Store the additional information in your database
+          const db = getDatabase(app); 
+          set(ref(db, 'users/' + userId), userData)
+            .then(() => {
+              navigate('/');
+            })
+            .catch((error) => {
+              console.error('Error storing user data:', error);
+            });
         })
         .catch((error) => {
           console.error('Error updating display name:', error);
@@ -35,6 +49,7 @@ export default function Signup() {
         console.log('Error Message:', errorMessage);
       });
   }
+
 
   return (
     <>

@@ -6,7 +6,7 @@ import {
   SignalIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline'
-import {auth} from '../firebase/config'
+import { auth } from '../firebase/config'
 import Sidebar from '../component/Sidebar'
 import Searchbar from '../component/Searchbar'
 import SecNav from '../component/SecNav'
@@ -62,17 +62,17 @@ export default function Dashboard() {
   return (
     <>
       <div>
-        <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}/>
+        <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} colors={colors} navigation={navigation} teams={teams} />
         <div className="xl:pl-72">
           {/* Sticky search header */}
-          <Searchbar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}/>
+          <Searchbar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
 
           <main>
             <header>
               {/* Secondary navigation */}
               <SecNav secondaryNavigation={secondaryNavigation} />
-              <Form/>
+              <Form />
             </header>
           </main>
         </div>

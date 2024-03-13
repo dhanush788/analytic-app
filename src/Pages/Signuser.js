@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom'
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { app } from '../firebase/config';
 import { useNavigate } from 'react-router-dom';
+import { getDatabase, ref, set } from "firebase/database";
+
 
 
 const Signuser = () => {
@@ -28,32 +30,44 @@ const Signuser = () => {
     
 
     const handleSignUp = (event) => {
-        event.preventDefault();
-        const auth = getAuth(app);
-        createUserWithEmailAndPassword(auth, username + "@analytics.com", password)
-          .then((userCredential) => {
-            // Signed in 
-            const user = userCredential.user;
-            // Update the display name
-            updateProfile(auth.currentUser, {
+      event.preventDefault();
+      const auth = getAuth(app);
+      createUserWithEmailAndPassword(auth, username + "@analytics.com", password)
+        .then((userCredential) => {
+          // Signed in 
+          const user = userCredential.user;
+          // Update the display name
+          updateProfile(auth.currentUser, {
+            displayName: username,
+          })
+          .then(() => {
+            // Store additional user information (e.g., phone number) in a database
+            const userId = user.uid;
+            const userData = {
               displayName: username,
-              isEmailVerified: false
-            })
-            .then(() => {
-              navigate('/');
-            })
-            .catch((error) => {
-              console.error('Error updating display name:', error);
-            });
+              user : 'user'
+            };
+            // Store the additional information in your database
+            const db = getDatabase(app); 
+            set(ref(db, 'users/' + userId), userData)
+              .then(() => {
+                navigate('/');
+              })
+              .catch((error) => {
+                console.error('Error storing user data:', error);
+              });
           })
           .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.log('Error Code:', errorCode);
-            console.log('Error Message:', errorMessage);
-            setMessage(errorMessage);
+            console.error('Error updating display name:', error);
           });
-      }
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log('Error Code:', errorCode);
+          console.log('Error Message:', errorMessage);
+        });
+    }
 
 
 

@@ -42,19 +42,13 @@ const teams = [
   { id: 2, name: 'Ola', href: '#', initial: 'P', current: false },
 ]
 
-const secondaryNavigation = [
-  { name: 'Add a user', href: '#', current: true },
-  { name: 'Users List', href: '#', current: false },
-  { name: 'Settings', href: '#', current: false },
-  { name: 'Notifications', href: '#', current: false },
-]
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
 
-export default function Sidebar({sidebarOpen , setSidebarOpen}) {
+export default function Sidebar({sidebarOpen , setSidebarOpen ,colors, navigation, teams}) {
   return (
     <>
 
