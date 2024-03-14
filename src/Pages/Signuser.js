@@ -45,7 +45,8 @@ const Signuser = () => {
             const userId = user.uid;
             const userData = {
               displayName: username,
-              user : 'user'
+              user : 'user',
+              metadata : user.metadata,
             };
             // Store the additional information in your database
             const db = getDatabase(app); 
