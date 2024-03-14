@@ -22,37 +22,37 @@ export default function Form() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  
+
     const encodedPairs = [];
-      for (const key in formData) {
+    for (const key in formData) {
       const encodedKey = encodeURIComponent(key);
       const encodedValue = encodeURIComponent(formData[key]);
       encodedPairs.push(`${encodedKey}=${encodedValue}`);
     }
-      const encodedFormData = encodedPairs.join('&');
-      const encryptedFormData = btoa(encodedFormData.toString());
-      console.log(encryptedFormData);
+    const encodedFormData = encodedPairs.join('&');
+    const encryptedFormData = btoa(encodedFormData.toString());
+    console.log(encryptedFormData);
 
-      // emailjs
-      // .sendForm('service_j7phaji', 'template_djttdck', form.current, {
-      //   publicKey: 'REIRbQwo-omARmAi5',
-      // })
-      // .then(
-      //   () => {
-      //     console.log('SUCCESS!');
-      //   },
-      //   (error) => {
-      //     console.log('FAILED...', error.text);
-      //   },
-      // );
+    // emailjs
+    // .sendForm('service_j7phaji', 'template_djttdck', form.current, {
+    //   publicKey: 'REIRbQwo-omARmAi5',
+    // })
+    // .then(
+    //   () => {
+    //     console.log('SUCCESS!');
+    //   },
+    //   (error) => {
+    //     console.log('FAILED...', error.text);
+    //   },
+    // );
 
 
   };
-  
+
 
   return (
     <form ref={form} onSubmit={handleSubmit}>
-      <div className="space-y-12 lg:mx-8">
+      <div className="space-y-12 lg:m-8 m-4">
         <div className="border-b border-gray-900/10 pb-12">
           <h2 className="text-base font-semibold leading-7 text-gray-900">Enter User Details</h2>
           <p className="mt-1 text-sm leading-6 text-gray-600">
@@ -104,9 +104,9 @@ export default function Form() {
                   </div>
                   <div className="text-sm leading-6">
                     <label htmlFor="permission1" className="font-medium text-gray-900">
-                      Permission 1
+                      Tier 1
                     </label>
-                    <p className="text-gray-500">Option 1</p>
+                    <p className="text-gray-500">Read and write</p>
                   </div>
                 </div>
                 <div className="relative flex gap-x-3">
@@ -122,9 +122,9 @@ export default function Form() {
                   </div>
                   <div className="text-sm leading-6">
                     <label htmlFor="permission2" className="font-medium text-gray-900">
-                      Permission 2
+                      Tier 2
                     </label>
-                    <p className="text-gray-500">Option 2</p>
+                    <p className="text-gray-500">Read only</p>
                   </div>
                 </div>
                 <div className="relative flex gap-x-3">
@@ -140,9 +140,9 @@ export default function Form() {
                   </div>
                   <div className="text-sm leading-6">
                     <label htmlFor="permission3" className="font-medium text-gray-900">
-                      Permission 3
+                      Tier 3
                     </label>
-                    <p className="text-gray-500">Option 3</p>
+                    <p className="text-gray-500">No access</p>
                   </div>
                 </div>
               </div>

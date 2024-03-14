@@ -32,7 +32,6 @@ function App() {
     onValue(starCountRef, (snapshot) => {
       const data = snapshot.val();
       setUserType(data);
-      console.log(data)
     });
   }, [auth, user]);
 

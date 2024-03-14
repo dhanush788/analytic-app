@@ -1,4 +1,4 @@
-import {  Fragment, useContext, useState } from 'react'
+import { Fragment, useContext, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import {
   XMarkIcon,
@@ -14,7 +14,7 @@ function classNames(...classes) {
 
 export default function Sidebar({ sidebarOpen, setSidebarOpen, colors, navigation, teams = [] }) {
 
-  const {setCurrent} = useContext(OptionsContext) 
+  const { setCurrent } = useContext(OptionsContext)
 
 
   return (
@@ -93,7 +93,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen, colors, navigatio
                               <div className="text-xs font-semibold leading-6 text-gray-400">Your teams</div>
                               <ul role="list" className="-mx-2 mt-2 space-y-1">
                                 {teams?.map((team) => (
-                                  <li key={team.name}>
+                                  <li key={team.displayName}>
                                     <a
                                       href={team.href}
                                       className={classNames(
@@ -104,9 +104,9 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen, colors, navigatio
                                       )}
                                     >
                                       <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-gray-700 bg-gray-800 text-[0.625rem] font-medium text-gray-400 group-hover:text-white">
-                                        {team.initial}
+                                        {team.displayName}
                                       </span>
-                                      <span className="truncate">{team.name}</span>
+                                      <span className="truncate">{team.displayName}</span>
                                     </a>
                                   </li>
                                 ))}
@@ -172,7 +172,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen, colors, navigatio
                       <div className="text-xs font-semibold leading-6 text-gray-400">Your teams</div>
                       <ul role="list" className="-mx-2 mt-2 space-y-1">
                         {teams.map((team) => (
-                          <li key={team.name}>
+                          <li key={team.displayName}>
                             <a
                               href={team.href}
                               className={classNames(
@@ -185,7 +185,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen, colors, navigatio
                               <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-gray-700 bg-gray-800 text-[0.625rem] font-medium text-gray-400 group-hover:text-white">
                                 {team.initial}
                               </span>
-                              <span className="truncate">{team.name}</span>
+                              <span className="truncate">{team.displayName}</span>
                             </a>
                           </li>
                         ))}

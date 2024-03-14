@@ -15,6 +15,9 @@ export const OptionsContext = createContext();
 export const OptionsProvider = ({ children }) => {
     const [userType, setUserType] = useState(null);
     const [user, setUser] = useState(null);
+    const [navigation, setNavigation] = useState([]);
+    const [teams, setTeams] = useState([])
+
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -30,7 +33,16 @@ export const OptionsProvider = ({ children }) => {
         onValue(starCountRef, (snapshot) => {
             const data = snapshot.val();
             setUserType(data);
-            console.log(data)
+        });
+    }, [auth, user]);
+
+    useEffect(() => {
+        const db = getDatabase();
+        const starCountRef = ref(db, 'users/');
+        onValue(starCountRef, (snapshot) => {
+            const data = snapshot.val();
+            const userValues = Object.values(data).filter(obj => obj.user === 'user'); 
+            setTeams(userValues)
         });
     }, [auth, user]);
 
@@ -55,22 +67,69 @@ export const OptionsProvider = ({ children }) => {
         borderActivityItem: 'border-white/5',
     }
 
-    const [navigation, setNavigation] = useState(
-        userType === ' admin' ?
-        ([
-            { name: 'Blah1', href: '#', icon: FolderIcon, current: true },
-            { name: 'Add an user', href: '#', icon: ServerIcon, current: false },
-            { name: 'Activity', href: '#', icon: SignalIcon, current: false },
-        ])
-        :
-        ([
-            { name: 'Route Analysis', href: '#', icon: MapPinIcon, current: true },
-            { name: 'Trip Analysis', href: '#', icon: ChartBarIcon, current: false },
-            { name: 'User Behaviour', href: '#', icon: ChartPieIcon, current: false },
-            { name: 'Forecasting', href: '#', icon: ArrowTrendingUpIcon, current: false },
-            { name: 'Additional features', href: '#', icon: UserPlusIcon, current: false },
-            { name: 'Settings', href: '#', icon: Cog8ToothIcon, current: false }
-        ]))
+
+    useEffect(() => {
+        if (userType) {
+            const navigationData =
+                userType.trim() === 'admin' ?
+                    [{
+                        name: 'Add User',
+                        href: '#',
+                        icon: UserPlusIcon,
+                        current: true
+                    },
+                    {
+                        name: 'Settings',
+                        href: '#',
+                        icon: Cog8ToothIcon,
+                        current: false
+                    }
+                    ] :
+                    [{
+                        name: 'Route Analysis',
+                        href: '#',
+                        icon: MapPinIcon,
+                        current: true
+                    },
+                    {
+                        name: 'Trip Analysis',
+                        href: '#',
+                        icon: ChartBarIcon,
+                        current: false
+                    },
+                    {
+                        name: 'User Behaviour',
+                        href: '#',
+                        icon: ChartPieIcon,
+                        current: false
+                    },
+                    {
+                        name: 'Forecasting',
+                        href: '#',
+                        icon: ArrowTrendingUpIcon,
+                        current: false
+                    },
+                    {
+                        name: 'Additional features',
+                        href: '#',
+                        icon: UserPlusIcon,
+                        current: false
+                    },
+                    {
+                        name: 'Settings',
+                        href: '#',
+                        icon: Cog8ToothIcon,
+                        current: false
+                    }
+                    ];
+
+            setNavigation(navigationData);
+        }
+    }, [userType]);
+
+
+
+
 
     const setCurrent = (name) => {
         setNavigation((prev) =>
@@ -82,9 +141,9 @@ export const OptionsProvider = ({ children }) => {
                 }
                 return item;
             })
-            
-            
-            );
+
+
+        );
     }
 
     return (
@@ -92,7 +151,9 @@ export const OptionsProvider = ({ children }) => {
             value={{
                 navigation,
                 colors,
-                setCurrent
+                setCurrent,
+                teams
+
             }}
         >
             {children}

@@ -24,19 +24,16 @@ function classNames(...classes) {
 
 export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const {colors} = useContext(OptionsContext)
-  const {navigation} = useContext(OptionsContext)
+  const {colors , navigation , teams} = useContext(OptionsContext)
+  
   return (
     <>
       <div>
         <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} colors={colors} navigation={navigation} teams={teams} />
         <Searchbar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
         <div className="xl:pl-72">
-
           <main>
             <header>
-              {/* Secondary navigation */}
-              <SecNav secondaryNavigation={secondaryNavigation} />
               <Form />
             </header>
           </main>
