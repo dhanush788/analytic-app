@@ -1,12 +1,10 @@
-import {  Fragment, useState } from 'react'
+import {  Fragment, useContext, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import {
-  FolderIcon,
-  ServerIcon,
-  SignalIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { auth } from '../firebase/config'
+import { OptionsContext } from '../context/DashbardContext'
 
 
 function classNames(...classes) {
@@ -16,7 +14,7 @@ function classNames(...classes) {
 
 export default function Sidebar({ sidebarOpen, setSidebarOpen, colors, navigation, teams = [] }) {
 
-  console.log(teams.length !== 0)
+  const {setCurrent} = useContext(OptionsContext) 
 
 
   return (
@@ -73,6 +71,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen, colors, navigatio
                             <li key={item.name}>
                               <a
                                 href={item.href}
+                                onClick={() => setCurrent(item.name)}
                                 className={classNames(
                                   item.current
                                     ? colors.bgSidebarActive + ' ' + colors.textColor
@@ -151,6 +150,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen, colors, navigatio
                     <li key={item.name}>
                       <a
                         href={item.href}
+                        onClick={() => setCurrent(item.name)}
                         className={classNames(
                           item.current
                             ? colors.bgSidebarActive + ' ' + colors.textColor

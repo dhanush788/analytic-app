@@ -55,27 +55,44 @@ export const OptionsProvider = ({ children }) => {
         borderActivityItem: 'border-white/5',
     }
 
-    const navigation = userType === ' admin' ?
-        [
-            { name: 'Blah1', href: '#', icon: FolderIcon, current: false },
-            { name: 'Add an user', href: '#', icon: ServerIcon, current: true },
+    const [navigation, setNavigation] = useState(
+        userType === ' admin' ?
+        ([
+            { name: 'Blah1', href: '#', icon: FolderIcon, current: true },
+            { name: 'Add an user', href: '#', icon: ServerIcon, current: false },
             { name: 'Activity', href: '#', icon: SignalIcon, current: false },
-        ]
+        ])
         :
-        [
-            { name: 'Route Analysis', href: '#', icon: MapPinIcon, current: false },
+        ([
+            { name: 'Route Analysis', href: '#', icon: MapPinIcon, current: true },
             { name: 'Trip Analysis', href: '#', icon: ChartBarIcon, current: false },
-            { name: 'User Behaviour', href: '#', icon: ChartPieIcon, current: true },
+            { name: 'User Behaviour', href: '#', icon: ChartPieIcon, current: false },
             { name: 'Forecasting', href: '#', icon: ArrowTrendingUpIcon, current: false },
             { name: 'Additional features', href: '#', icon: UserPlusIcon, current: false },
             { name: 'Settings', href: '#', icon: Cog8ToothIcon, current: false }
-        ]
+        ]))
+
+    const setCurrent = (name) => {
+        setNavigation((prev) =>
+            prev.map((item) => {
+                if (item.name === name) {
+                    item.current = true;
+                } else {
+                    item.current = false;
+                }
+                return item;
+            })
+            
+            
+            );
+    }
 
     return (
         <OptionsContext.Provider
             value={{
                 navigation,
                 colors,
+                setCurrent
             }}
         >
             {children}
