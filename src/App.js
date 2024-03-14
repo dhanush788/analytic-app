@@ -7,10 +7,13 @@ import Dashboard from './Pages/Dashboard';
 import Signup from './Pages/Signup';
 import Signuser from './Pages/Signuser';
 import DashboardUser from './Pages/DashboardUser';
+import { getDatabase, ref, onValue } from "firebase/database";
+
 
 function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [userType, setUserType] = useState(null);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -21,15 +24,29 @@ function App() {
     return () => unsubscribe();
   }, []);
 
+
+  useEffect(() => {
+    const db = getDatabase();
+    const starCountRef = ref(db, 'users/' + auth?.currentUser?.uid + '/user');
+    onValue(starCountRef, (snapshot) => {
+      const data = snapshot.val();
+      setUserType(data);
+      console.log(data)
+    });
+  }, [auth, user]);
+
   if (loading) {
     return <div>Loading...</div>;
   }
+
 
   return (
     <div>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={user ? (auth.currentUser.phoneNumber ? <Dashboard /> : (<DashboardUser/>) ): <Navigate to="/signin" />} />
+          {
+            user ? <Route path="/" element={userType === 'admin' ? <Dashboard /> : <DashboardUser />} /> : <Navigate to="/signin" />
+          }
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="*" element={<h1>Not Found</h1>} />

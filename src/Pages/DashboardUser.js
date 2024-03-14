@@ -1,12 +1,7 @@
-import { Fragment, useState } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-import {
-  FolderIcon,
-  ServerIcon,
-  SignalIcon,
-  XMarkIcon,
-} from '@heroicons/react/24/outline'
-import {auth} from '../firebase/config'
+import { useState } from 'react'
+import { MapPinIcon, ChartBarIcon, ChartPieIcon } from '@heroicons/react/24/outline'
+import { ArrowTrendingUpIcon } from '@heroicons/react/20/solid'
+import { auth } from '../firebase/config'
 import Sidebar from '../component/Sidebar'
 import Searchbar from '../component/Searchbar'
 
@@ -32,22 +27,13 @@ const colors = {
 }
 
 const navigation = [
-  { name: 'Blah1', href: '#', icon: FolderIcon, current: false },
-  { name: 'Add an user', href: '#', icon: ServerIcon, current: true },
-  { name: 'Activity', href: '#', icon: SignalIcon, current: false },
+  { name: 'Route Analysis', href: '#', icon: MapPinIcon, current: false },
+  { name: 'Trip Analysis', href: '#', icon: ChartBarIcon, current: false },
+  { name: 'User Behaviour', href: '#', icon: ChartPieIcon, current: true },
+  { name: 'Forecasting', href: '#', icon: ArrowTrendingUpIcon, current: false },
+
 ]
 
-const teams = [
-  { id: 1, name: 'Uber', href: '#', initial: 'P', current: false },
-  { id: 2, name: 'Ola', href: '#', initial: 'P', current: false },
-]
-
-const secondaryNavigation = [
-  { name: 'Add a user', href: '#', current: true },
-  { name: 'Users List', href: '#', current: false },
-  { name: 'Settings', href: '#', current: false },
-  { name: 'Notifications', href: '#', current: false },
-]
 
 
 
@@ -61,12 +47,9 @@ export default function DashboardUser() {
   return (
     <>
       <div>
-        <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} colors={colors} navigation={navigation} teams={teams}/>
+        <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} colors={colors} navigation={navigation} teams={[]} />
         <div className="xl:pl-72">
-          {/* Sticky search header */}
-          <Searchbar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}/>
-
-
+          <Searchbar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
           <main>
             <header>
             </header>
