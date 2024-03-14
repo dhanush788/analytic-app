@@ -8,6 +8,7 @@ import Signup from './Pages/Signup';
 import Signuser from './Pages/Signuser';
 import DashboardUser from './Pages/DashboardUser';
 import { getDatabase, ref, onValue } from "firebase/database";
+import { OptionsProvider } from './context/DashbardContext';
 
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
 
   return (
     <div>
+      <OptionsProvider>
       <BrowserRouter>
         <Routes>
           {
@@ -53,6 +55,7 @@ function App() {
           <Route path="/signuser/:id" element={<Signuser />} />
         </Routes>
       </BrowserRouter>
+      </OptionsProvider>
     </div>
   );
 }

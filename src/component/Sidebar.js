@@ -140,7 +140,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen, colors, navigatio
       </Transition.Root>
 
       {/* Static sidebar for desktop */}
-      <div className="hidden xl:fixed xl:inset-y-0 xl:z-50 xl:flex xl:w-72 xl:flex-col">
+      <div className="hidden xl:fixed xl:inset-y-0 xl:z-50 xl:flex xl:w-72 xl:flex-col lg:mt-16">
         {/* Sidebar component, swap this element with another sidebar if you like */}
         <div className={`flex grow flex-col gap-y-5 overflow-y-auto ${colors.bgSidebar} px-6 ${colors.borderSidebar}`}>
           <nav className="flex flex-1 flex-col">
