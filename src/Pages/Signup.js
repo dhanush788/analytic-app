@@ -30,7 +30,7 @@ export default function Signup() {
           };
           // Store the additional information in your database
           const db = getDatabase(app); 
-          set(ref(db, 'admin/' + userId), userData)
+          set(ref(db, 'users/' + userId), userData)
             .then(() => {
               navigate('/');
             })

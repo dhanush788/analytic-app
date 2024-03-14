@@ -171,7 +171,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen, colors, navigatio
                     <>
                       <div className="text-xs font-semibold leading-6 text-gray-400">Your teams</div>
                       <ul role="list" className="-mx-2 mt-2 space-y-1">
-                        {teams.map((team) => (
+                        {teams?.map((team) => (
                           <li key={team.displayName}>
                             <a
                               href={team.href}

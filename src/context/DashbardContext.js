@@ -41,7 +41,8 @@ export const OptionsProvider = ({ children }) => {
         const starCountRef = ref(db, 'users/');
         onValue(starCountRef, (snapshot) => {
             const data = snapshot.val(); 
-            setTeams(data)
+            const filteredData = Object.values(data).filter(obj => obj.user === 'user');
+            setTeams(filteredData)
         });
     }, [auth, user]);
 

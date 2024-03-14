@@ -46,7 +46,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           {
-            user ? <Route path="/" element={userType === 'admin' ? <Dashboard /> : <DashboardUser />} /> : <Navigate to="/signin" />
+            userType && <Route path="/" element={userType?.trim() === 'admin' ? <Dashboard /> : <DashboardUser />} /> 
           }
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<Signup />} />
