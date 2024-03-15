@@ -24,6 +24,7 @@ function App() {
 
     return () => unsubscribe();
   }, []);
+  console.log(userType)
 
 
   useEffect(() => {
@@ -46,7 +47,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           {
-            userType && <Route path="/" element={userType?.trim() === 'admin' ? <Dashboard /> : <DashboardUser />} /> 
+            user && <Route path="/" element={userType?.trim() === 'admin' ? <Dashboard /> : <DashboardUser />} /> 
           }
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<Signup />} />

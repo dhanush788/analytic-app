@@ -2,6 +2,7 @@ import { useContext, useState } from 'react'
 import Sidebar from '../component/Sidebar'
 import Searchbar from '../component/Searchbar'
 import { OptionsContext } from '../context/DashbardContext'
+import Analysis from '../component/Analysis'
 
 
 
@@ -22,6 +23,7 @@ export default function DashboardUser() {
         <div className="xl:pl-72">
           <main>
             <header>
+              <Analysis />
             </header>
           </main>
         </div>
