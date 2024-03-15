@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import Sidebar from '../component/Sidebar'
 import Searchbar from '../component/Searchbar'
 import { OptionsContext } from '../context/DashbardContext'
@@ -12,8 +12,18 @@ function classNames(...classes) {
 
 export default function DashboardUser() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const {colors} = useContext(OptionsContext)
-  const {navigation} = useContext(OptionsContext)
+  const [current, setCurrent] = useState("Route Analysis")
+  const { colors } = useContext(OptionsContext)
+  const { navigation } = useContext(OptionsContext)
+
+  useEffect(() => {
+
+    navigation.map((item) => {
+      if (item.current === true) {
+        setCurrent(item.name)
+      }
+    })
+  }, [navigation])
 
   return (
     <>
@@ -23,7 +33,13 @@ export default function DashboardUser() {
         <div className="xl:pl-72">
           <main>
             <header>
-              <Analysis />
+              {
+                (current === "Route Analysis" || current === "Trip Analysis" || current === "User Behaviour" || current === "Forecasting") &&
+                <>
+                  <h1 className="text-2xl font-bold text-gray-900 mt-8 ml-8">{current}</h1>
+                  < Analysis />
+                </>
+              }
             </header>
           </main>
         </div>
