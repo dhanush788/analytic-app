@@ -17,6 +17,7 @@ export const OptionsProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [navigation, setNavigation] = useState([]);
     const [teams, setTeams] = useState([])
+    const [uploadedData, setUploadedData] = useState(false);
 
 
     useEffect(() => {
@@ -77,19 +78,20 @@ export const OptionsProvider = ({ children }) => {
                         href: '#',
                         icon: UserPlusIcon,
                         current: true
-                    },
-                    {
-                        name: 'Settings',
-                        href: '#',
-                        icon: Cog8ToothIcon,
-                        current: false
                     }
                     ] :
-                    [{
+                    [
+                    {
+                        name: 'Upload Data',
+                        href: '#',
+                        icon: FolderIcon,
+                        current: true
+                    },   
+                    {
                         name: 'Route Analysis',
                         href: '#',
                         icon: MapPinIcon,
-                        current: true
+                        current: false
                     },
                     {
                         name: 'Trip Analysis',
@@ -109,18 +111,6 @@ export const OptionsProvider = ({ children }) => {
                         icon: ArrowTrendingUpIcon,
                         current: false
                     },
-                    {
-                        name: 'Additional features',
-                        href: '#',
-                        icon: UserPlusIcon,
-                        current: false
-                    },
-                    {
-                        name: 'Settings',
-                        href: '#',
-                        icon: Cog8ToothIcon,
-                        current: false
-                    }
                     ];
 
             setNavigation(navigationData);
@@ -152,7 +142,9 @@ export const OptionsProvider = ({ children }) => {
                 navigation,
                 colors,
                 setCurrent,
-                teams
+                teams,
+                uploadedData,
+                setUploadedData
 
             }}
         >

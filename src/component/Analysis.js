@@ -1,10 +1,12 @@
+import { set } from 'date-fns';
 import React, { useRef, useState } from 'react';
 import { DateRangePicker } from 'react-date-range';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 
-const Analysis = () => {
+const Analysis = ( {setUploadedData} ) => {
     const [loading, setLoading] = useState(false);
+    const [result, setResult] = useState(false);
     const [selectionRange, setSelectionRange] = useState({
         startDate: new Date(),
         endDate: new Date(),
@@ -45,8 +47,17 @@ const Analysis = () => {
             return;
         }
         setLoading(true);
-        // Handle form submission
+        setUploadedData(true);
+    
+        // Simulate loading for 10 seconds
+        setTimeout(() => {
+            // Handle form submission here
+            console.log('Form submitted successfully');
+            setLoading(false);
+            setResult(true);
+        }, 10000); // 10 seconds in milliseconds
     };
+    
 
     const handleSelect = (ranges) => {
         setSelectionRange({
@@ -57,7 +68,7 @@ const Analysis = () => {
 
     return (
         <form ref={form} onSubmit={handleSubmit}>
-            {!loading ? (
+            {!loading && !result && (
                 <>
                     <div className="space-y-12 lg:m-8 m-4">
                         <div className="border-b border-gray-900/10 pb-12">
@@ -103,9 +114,23 @@ const Analysis = () => {
                         </button>
                     </div>
                 </>
-            ) : (
-                <></>
             )}
+            {
+                loading && (
+                    <div className="mt-6 flex items-center m-8 gap-x-6">
+                        <p className="text-sm font-semibold leading-6 text-gray-900">Loading...</p>
+                    </div>
+                )
+            }
+            {
+                result && (
+                    <div className="mt-6 flex items-center m-8 gap-x-6">
+                        <button type="button" className="text-sm font-semibold leading-6 text-gray-900">
+                            Download
+                        </button>
+                    </div>
+                )
+            }
         </form>
     );
 };

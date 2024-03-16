@@ -15,6 +15,7 @@ export default function DashboardUser() {
   const [current, setCurrent] = useState("Route Analysis")
   const { colors } = useContext(OptionsContext)
   const { navigation } = useContext(OptionsContext)
+  const { uploadedData ,setUploadedData } = useContext(OptionsContext)
 
   useEffect(() => {
 
@@ -34,10 +35,29 @@ export default function DashboardUser() {
           <main>
             <header>
               {
-                (current === "Route Analysis" || current === "Trip Analysis" || current === "User Behaviour" || current === "Forecasting") &&
+                (current === "Upload Data") &&
                 <>
                   <h1 className="text-2xl font-bold text-gray-900 mt-8 ml-8">{current}</h1>
-                  < Analysis />
+                  < Analysis setUploadedData = {setUploadedData}/>
+                </>
+              }
+              {
+                !uploadedData && (current === "Route Analysis" || current === "Trip Analysis" || current === "User Behaviour" || current === "Forecasting") &&
+                <>
+                  <h1 className="text-2xl font-bold text-gray-900 mt-8 ml-8">{current}</h1>
+                  <div className="mt-8 ml-8">
+                    <p className="text-gray-900">No data available for analysis</p>
+                    <p className="text-gray-900">Please upload data to start analysis</p>
+                  </div>
+                </>
+              }
+              {
+                uploadedData && (current === "Route Analysis" || current === "Trip Analysis" || current === "User Behaviour" || current === "Forecasting") &&
+                <>
+                  <h1 className="text-2xl font-bold text-gray-900 mt-8 ml-8">{current}</h1>
+                  <div className="mt-8 ml-8">
+                    <p className="text-gray-900">Result is ready</p>
+                  </div>
                 </>
               }
             </header>
