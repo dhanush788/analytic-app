@@ -13,6 +13,7 @@ const Signuser = () => {
     const [message, setMessage] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [gmail, setGmail] = useState('');
     const navigate = useNavigate(); 
 
 
@@ -21,7 +22,9 @@ const Signuser = () => {
         try {
             const encodedFormData = window.atob(id)
             const username = encodedFormData.split('&')[0].split('=')[1]
+            const gmail = decodeURIComponent(encodedFormData.split('&')[1].split('=')[1].replace('%40', '@'));
             setUsername(username)
+            setGmail(gmail)
         }
         catch (err) {
             setError(true)
@@ -32,7 +35,7 @@ const Signuser = () => {
     const handleSignUp = (event) => {
       event.preventDefault();
       const auth = getAuth(app);
-      createUserWithEmailAndPassword(auth, username , password)
+      createUserWithEmailAndPassword(auth, gmail , password)
         .then((userCredential) => {
           // Signed in 
           const user = userCredential.user;
@@ -115,7 +118,7 @@ const Signuser = () => {
                               type="email"
                               autoComplete="email"
                               required
-                              value={username}
+                              value={gmail}
                               className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             />
                           </div>
