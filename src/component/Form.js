@@ -76,7 +76,7 @@ export default function Form() {
                     value={formData.username}
                     onChange={handleChange}
                   />
-                  <span className="flex select-none items-center pr-3 text-gray-500 sm:text-sm">@analytics.com</span>
+                  {/* <span className="flex select-none items-center pr-3 text-gray-500 sm:text-sm">@analytics.com</span> */}
                 </div>
               </div>
             </div>
