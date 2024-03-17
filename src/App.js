@@ -12,7 +12,7 @@ import { OptionsProvider } from './context/DashbardContext';
 
 
 function App() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(false);
   const [loading, setLoading] = useState(true);
   const [userType, setUserType] = useState(null);
 
@@ -40,6 +40,10 @@ function App() {
     return <div>Loading...</div>;
   }
 
+  if( user && userType === null) {
+    return <div>Loading....</div>
+  }
+
 
   return (
     <div>
@@ -49,7 +53,7 @@ function App() {
           {
             user && <Route path="/" element={userType?.trim() === 'admin' ? 
             <Dashboard /> 
-            : 
+            :
             <DashboardUser />
           } /> 
           }
