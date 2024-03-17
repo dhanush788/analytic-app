@@ -59,7 +59,7 @@ function App() {
           }
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="*" element={<h1>Not Found</h1>} />
+          <Route path="*" element={<Signup />} />
           <Route path="/signuser/:id" element={<Signuser />} />
         </Routes>
       </BrowserRouter>
