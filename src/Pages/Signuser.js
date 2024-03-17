@@ -65,6 +65,9 @@ const Signuser = () => {
             console.error('Error updating display name:', error);
           });
         })
+        .then(() => {
+          navigate('/');
+        })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
