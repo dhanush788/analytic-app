@@ -3,6 +3,7 @@ import Sidebar from '../component/Sidebar'
 import Searchbar from '../component/Searchbar'
 import { OptionsContext } from '../context/DashbardContext'
 import Analysis from '../component/Analysis'
+import { DateRangePicker } from 'react-date-range'
 
 
 
@@ -15,7 +16,12 @@ export default function DashboardUser() {
   const [current, setCurrent] = useState("Route Analysis")
   const { colors } = useContext(OptionsContext)
   const { navigation } = useContext(OptionsContext)
-  const { uploadedData ,setUploadedData } = useContext(OptionsContext)
+  const { uploadedData, setUploadedData } = useContext(OptionsContext)
+  const [selectionRange, setSelectionRange] = useState({
+    startDate: new Date(),
+    endDate: new Date(),
+    key: 'selection'
+});
 
   useEffect(() => {
 
@@ -25,6 +31,13 @@ export default function DashboardUser() {
       }
     })
   }, [navigation])
+
+  const handleSelect = (ranges) => {
+    setSelectionRange({
+        ...selectionRange,
+        ...ranges.selection
+    });
+};
 
   return (
     <>
@@ -38,7 +51,7 @@ export default function DashboardUser() {
                 (current === "Upload Data") &&
                 <>
                   <h1 className="text-2xl font-bold text-gray-900 mt-8 ml-8">{current}</h1>
-                  < Analysis setUploadedData = {setUploadedData}/>
+                  < Analysis setUploadedData={setUploadedData} />
                 </>
               }
               {
@@ -57,6 +70,10 @@ export default function DashboardUser() {
                   <h1 className="text-2xl font-bold text-gray-900 mt-8 ml-8">{current}</h1>
                   <div className="mt-8 ml-8">
                     <p className="text-gray-900">Result is ready</p>
+                    <DateRangePicker
+                      ranges={[selectionRange]}
+                      onChange={handleSelect}
+                    />
                   </div>
                 </>
               }

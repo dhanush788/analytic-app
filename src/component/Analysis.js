@@ -55,7 +55,7 @@ const Analysis = ({ setUploadedData }) => {
             console.log('Form submitted successfully');
             setLoading(false);
             setResult(true);
-        }, 10000); // 10 seconds in milliseconds
+        }, 1000); // 10 seconds in milliseconds
     };
 
 
@@ -92,14 +92,14 @@ const Analysis = ({ setUploadedData }) => {
                             </div>
                         </div>
 
-                        <div className="border-b border-gray-900/10 pb-12">
+                        {/* <div className="border-b border-gray-900/10 pb-12">
                             <h2 className="text-base font-semibold leading-7 text-gray-900">Date picker</h2>
                             <p className="mt-1 text-sm leading-6 text-gray-600">Decide the range of Date to be choosed.</p>
                             <DateRangePicker
                                 ranges={[selectionRange]}
                                 onChange={handleSelect}
                             />
-                        </div>
+                        </div> */}
                     </div>
 
                     <div className="mt-6 flex items-center justify-end gap-x-6 mr-6">
