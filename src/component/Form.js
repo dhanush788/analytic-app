@@ -10,11 +10,13 @@ export default function Form() {
     'permission2': false,
     'permission3': false,
   });
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState('');
 
   const form = useRef()
 
   const handleChange = (e) => {
-    const { name,email, value, type, checked } = e.target;
+    const { name, email, value, type, checked } = e.target;
     setFormData((prevData) => ({
       ...prevData,
       [name]: type === 'checkbox' ? checked : value,
@@ -33,19 +35,30 @@ export default function Form() {
     const encodedFormData = encodedPairs.join('&');
     const encryptedFormData = btoa(encodedFormData.toString());
     console.log(encryptedFormData);
+    const data = {
+      'username': formData.username,
+      'email': formData.email,
+      'permission1': formData.permission1,
+      'permission2': formData.permission2,
+      'permission3': formData.permission3,
+      'encryptedFormData': encryptedFormData,
+    };
 
-    // emailjs
-    // .sendForm('service_j7phaji', 'template_djttdck', form.current, {
-    //   publicKey: 'REIRbQwo-omARmAi5',
-    // })
-    // .then(
-    //   () => {
-    //     console.log('SUCCESS!');
-    //   },
-    //   (error) => {
-    //     console.log('FAILED...', error.text);
-    //   },
-    // );
+    emailjs
+      .send('service_j7phaji', 'template_djttdck', data, {
+        publicKey: 'REIRbQwo-omARmAi5',
+      })
+      .then(
+        () => {
+          console.log('SUCCESS!');
+          setSuccess(true);
+          setError('');
+        },
+        (error) => {
+          console.log('FAILED...', error.text);
+          setError(error.text);
+        },
+      );
 
 
   };
@@ -53,6 +66,18 @@ export default function Form() {
 
   return (
     <form ref={form} onSubmit={handleSubmit}>
+      {
+        success && (
+          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+            <strong className="font-bold">Success!</strong>
+            <span className="block sm:inline"> User details have been saved successfully.</span>
+          </div>
+        )
+      }
+      { error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative " role="alert">
+        <strong className="font-bold">Error!</strong>
+        <span className="block sm:inline"> {error}</span>
+      </div>}
       <div className="space-y-12 lg:m-8 m-4">
         <div className="border-b border-gray-900/10 pb-12">
           <h2 className="text-base font-semibold leading-7 text-gray-900">Enter User Details</h2>
