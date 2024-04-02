@@ -16,6 +16,8 @@ const Form = ({ current, setLoading, setResult }) => {
     key: 'selection'
   });
   const [error, setError] = useState("")
+  const [selectedPlace, setSelectedPlace] = useState("Place1")
+  const [selectedService, setSelectedService] = useState("Place1")
 
   const handleSelect = (ranges) => {
     setSelectionRange({
@@ -50,12 +52,37 @@ const Form = ({ current, setLoading, setResult }) => {
   return (
     <>
       <h1 className="text-2xl font-bold text-gray-900 mt-8 ml-8">{current}</h1>
-      <div className="mt-8 ml-8">
+      <div className="mt-8 ml-8 flex flex-col">
         <p className="text-gray-900">File is uploaded.</p><br /><br />
         <DateRangePicker
           ranges={[selectionRange]}
           onChange={handleSelect}
         />
+        <div className='flex gap-3'>
+          <h2 className="text-base font-semibold leading-7 text-gray-900 my-auto capitalize">Pick a place</h2>
+          <select
+            value={selectedPlace}
+            onChange={(e) => setSelectedPlace(e.target.value)}
+            className="px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:border-indigo-500 mr-auto my-3"
+          >
+            <option value="">Select a place</option>
+            <option value="Queens">Queens</option>
+            <option value="Queens">Queens</option>
+            <option value="Queens">Queens</option>
+          </select>
+        </div>
+        <div className='flex gap-3'>
+          <h2 className="text-base font-semibold leading-7 text-gray-900 capitalize my-auto">Pick a service</h2>
+          <select
+            value={selectedService}
+            onChange={(e) => setSelectedService(e.target.value)}
+            className="px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:border-indigo-500 mr-auto my-3"
+          >
+            <option value="">Select service</option>
+            <option value="Uber">Uber</option>
+            <option value="Ola">Ola</option>
+          </select>
+        </div>
       </div>
       <div className="mt-6 flex items-center justify-end gap-x-6 mr-6">
         <button type="button" className="text-sm font-semibold leading-6 text-gray-900">
@@ -96,7 +123,7 @@ export default function DashboardUser() {
       }
     })
   }, [navigation])
-  console.log(result)
+  console.log(result, "result")
 
 
   return (
@@ -134,20 +161,34 @@ export default function DashboardUser() {
                     <h1 className="text-2xl font-bold text-gray-900 mt-8 ml-8">Result</h1>
                     {current === "Route Analysis" && (
                       <>
-                        <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">most common pickup:</h2>
-                        <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">most common pickup</h2>
+                        <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">most common pickup point:</h2>
+                        <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">{result.most_common_pu_zone}</h2>
+                        <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">most common drop off point:</h2>
+                        <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">{result.most_common_do_zone}</h2>
                         <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">top-k most common route:</h2>
-                        <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">most common pickup</h2>
+                        <div className='flex flex-col'>
+                          {result.most_common_routes.map((route, index) => (
+                            <h2 key={index} className="text-sm font-medium leading-7 text-gray-600 ml-8">
+                              {route}
+                            </h2>
+                          ))}
+                        </div>
                         <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">top-k least common route:</h2>
-                        <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">most common pickup</h2>
+                        <div className='flex flex-col'>
+                          {result.least_common_routes.map((route, index) => (
+                            <h2 key={index} className="text-sm font-medium leading-7 text-gray-600 ml-8">
+                              {route}
+                            </h2>
+                          ))}
+                        </div>
                       </>
                     )}
                     {current === "Trip Analysis" && (
                       <>
                         <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">Daily aggregate revenue:</h2>
-                        <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">most common pickup</h2>
+                        <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">{result.daily_aggregate_driver_pay}</h2>
                         <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">Daily aggregate trip miles:</h2>
-                        <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">most common pickup</h2>
+                        <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">{result.daily_aggregate_miles}</h2>
                       </>
                     )}
                     {current === "User Behaviour" && (
