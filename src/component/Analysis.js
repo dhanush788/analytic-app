@@ -1,17 +1,8 @@
-import { set } from 'date-fns';
 import React, { useRef, useState } from 'react';
-import { DateRangePicker } from 'react-date-range';
-import 'react-date-range/dist/styles.css';
-import 'react-date-range/dist/theme/default.css';
 
 const Analysis = ({ setUploadedData }) => {
     const [loading, setLoading] = useState(false);
     const [result, setResult] = useState(false);
-    const [selectionRange, setSelectionRange] = useState({
-        startDate: new Date(),
-        endDate: new Date(),
-        key: 'selection'
-    });
     const form = useRef();
     const [formData, setFormData] = useState({
         'startDate': '',
@@ -59,12 +50,6 @@ const Analysis = ({ setUploadedData }) => {
     };
 
 
-    const handleSelect = (ranges) => {
-        setSelectionRange({
-            ...selectionRange,
-            ...ranges.selection
-        });
-    };
 
     return (
         <form ref={form} onSubmit={handleSubmit}>
