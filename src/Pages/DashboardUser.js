@@ -4,14 +4,18 @@ import Searchbar from '../component/Searchbar'
 import { OptionsContext } from '../context/DashbardContext'
 import Analysis from '../component/Analysis'
 import { DateRangePicker } from 'react-date-range'
+import axios from 'axios'
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
 
 
-const Form = ({current ,setLoading,setResult}) => {
+const Form = ({ current, setLoading, setResult }) => {
   const [selectionRange, setSelectionRange] = useState({
     startDate: new Date(),
     endDate: new Date(),
     key: 'selection'
   });
+  const [error, setError] = useState("")
 
   const handleSelect = (ranges) => {
     setSelectionRange({
@@ -21,39 +25,50 @@ const Form = ({current ,setLoading,setResult}) => {
     console.log(selectionRange)
   };
 
-  const handleResult = () => {
+  const handleResult = async () => {
     setLoading(true)
     const startDate = selectionRange.startDate.toISOString().slice(0, 10);
     const endDate = selectionRange.endDate.toISOString().slice(0, 10);
+    try {
+      const response = await axios.post('http://localhost:8000/traffic_analysis', {
+        start_date: '2022-11-30',
+        end_date: '2022-11-30',
+        borough: 'Queens',
+        brand: 'Uber',
+        k: 5
+      });
+      setResult(response.data);
+    } catch (error) {
+      setError(error.message);
+    }
 
     console.log("Start Date:", startDate);
     console.log("End Date:", endDate);
-    setResult(true)
     setLoading(false)
   }
 
   return (
     <>
-                  <h1 className="text-2xl font-bold text-gray-900 mt-8 ml-8">{current}</h1>
-                  <div className="mt-8 ml-8">
-                    <p className="text-gray-900">File is uploaded.</p><br /><br />
-                    <DateRangePicker
-                      ranges={[selectionRange]}
-                      onChange={handleSelect}
-                    />
-                  </div>
-                  <div className="mt-6 flex items-center justify-end gap-x-6 mr-6">
-                    <button type="button" className="text-sm font-semibold leading-6 text-gray-900">
-                      Cancel
-                    </button>
-                    <button
-                      onClick={handleResult}
-                      className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    >
-                      Get Result
-                    </button>
-                  </div>
-                </>
+      <h1 className="text-2xl font-bold text-gray-900 mt-8 ml-8">{current}</h1>
+      <div className="mt-8 ml-8">
+        <p className="text-gray-900">File is uploaded.</p><br /><br />
+        <DateRangePicker
+          ranges={[selectionRange]}
+          onChange={handleSelect}
+        />
+      </div>
+      <div className="mt-6 flex items-center justify-end gap-x-6 mr-6">
+        <button type="button" className="text-sm font-semibold leading-6 text-gray-900">
+          Cancel
+        </button>
+        <button
+          onClick={handleResult}
+          className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        >
+          Get Result
+        </button>
+      </div>
+    </>
   )
 }
 
@@ -70,7 +85,7 @@ export default function DashboardUser() {
   const { navigation } = useContext(OptionsContext)
   const [loading, setLoading] = useState(false)
   const { uploadedData, setUploadedData } = useContext(OptionsContext)
-  const [result,setResult] = useState(false)
+  const [result, setResult] = useState(false)
 
 
   useEffect(() => {
@@ -81,6 +96,7 @@ export default function DashboardUser() {
       }
     })
   }, [navigation])
+  console.log(result)
 
 
   return (
@@ -112,7 +128,38 @@ export default function DashboardUser() {
                 !result && uploadedData && (current === "Route Analysis" || current === "Trip Analysis" || current === "User Behaviour" || current === "Forecasting") &&
                 <Form current={current} setLoading={setLoading} setResult={setResult} />
               }
-              
+              {
+                result && (
+                  <>
+                    <h1 className="text-2xl font-bold text-gray-900 mt-8 ml-8">Result</h1>
+                    {current === "Route Analysis" && (
+                      <>
+                        <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">most common pickup:</h2>
+                        <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">most common pickup</h2>
+                        <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">top-k most common route:</h2>
+                        <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">most common pickup</h2>
+                        <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">top-k least common route:</h2>
+                        <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">most common pickup</h2>
+                      </>
+                    )}
+                    {current === "Trip Analysis" && (
+                      <>
+                        <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">Daily aggregate revenue:</h2>
+                        <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">most common pickup</h2>
+                        <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">Daily aggregate trip miles:</h2>
+                        <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">most common pickup</h2>
+                      </>
+                    )}
+                    {current === "User Behaviour" && (
+                      <>
+                        <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">Top-n peak traffic times:</h2>
+                        <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">most common pickup</h2>
+                      </>
+                    )}
+                  </>
+                )
+              }
+
             </header>
           </main>
         </div>
