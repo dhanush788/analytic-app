@@ -29,14 +29,14 @@ const Form = ({ current, setLoading, setResult }) => {
 
   const handleResult = async () => {
     setLoading(true)
-    const startDate = selectionRange.startDate.toISOString().slice(0, 10);
-    const endDate = selectionRange.endDate.toISOString().slice(0, 10);
+    const startdate = selectionRange.startDate.toISOString().slice(0, 10).toString();
+    const enddate = selectionRange.endDate.toISOString().slice(0, 10).toString();
     try {
       const response = await axios.post('http://localhost:8000/traffic_analysis', {
-        start_date: '2022-11-30',
-        end_date: '2022-11-30',
-        borough: 'Queens',
-        brand: 'Uber',
+        start_date: startdate,
+        end_date: enddate,
+        borough: selectedPlace,
+        brand: selectedService,
         k: 5
       });
       setResult(response.data);
@@ -44,8 +44,8 @@ const Form = ({ current, setLoading, setResult }) => {
       setError(error.message);
     }
 
-    console.log("Start Date:", startDate);
-    console.log("End Date:", endDate);
+    console.log("Start Date:", startdate);
+    console.log("End Date:", enddate);
     setLoading(false)
   }
 
@@ -165,6 +165,7 @@ export default function DashboardUser() {
                         <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">{result.most_common_pu_zone}</h2>
                         <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">most common drop off point:</h2>
                         <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">{result.most_common_do_zone}</h2>
+                        <img src='http://localhost:8000/images/map.jpg' alt='map' className='w-1/2 h-1/2' />
                         <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">top-k most common route:</h2>
                         <div className='flex flex-col'>
                           {result.most_common_routes.map((route, index) => (
@@ -181,14 +182,15 @@ export default function DashboardUser() {
                             </h2>
                           ))}
                         </div>
+                        <img src='http://localhost:8000/images/traffic.jpg' alt='map' className='w-1/2 h-1/2' />
                       </>
                     )}
                     {current === "Trip Analysis" && (
                       <>
                         <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">Daily aggregate revenue:</h2>
-                        <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">{result.daily_aggregate_driver_pay}</h2>
+                        <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">{result.aggregate_driver_pay}</h2>
                         <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">Daily aggregate trip miles:</h2>
-                        <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">{result.daily_aggregate_miles}</h2>
+                        <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">{result.aggregate_miles}</h2>
                       </>
                     )}
                     {current === "User Behaviour" && (
