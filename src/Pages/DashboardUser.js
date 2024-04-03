@@ -67,8 +67,11 @@ const Form = ({ current, setLoading, setResult }) => {
           >
             <option value="">Select a place</option>
             <option value="Queens">Queens</option>
-            <option value="Queens">Queens</option>
-            <option value="Queens">Queens</option>
+            <option value="Bronx">Bronx</option>
+            <option value="Manhattan">Manhattan</option>
+            <option value="Brooklyn">Brooklyn</option>
+            <option value="Staten Island">Staten Island</option>
+            <option value="EWR">EWR</option>
           </select>
         </div>
         <div className='flex gap-3'>
@@ -80,7 +83,7 @@ const Form = ({ current, setLoading, setResult }) => {
           >
             <option value="">Select service</option>
             <option value="Uber">Uber</option>
-            <option value="Ola">Ola</option>
+            <option value="Lyft">Lyft</option>
           </select>
         </div>
       </div>
@@ -113,6 +116,7 @@ export default function DashboardUser() {
   const [loading, setLoading] = useState(false)
   const { uploadedData, setUploadedData } = useContext(OptionsContext)
   const [result, setResult] = useState(false)
+  const [result2, setResult2] = useState(false)
 
 
   useEffect(() => {
@@ -152,56 +156,63 @@ export default function DashboardUser() {
                 </>
               }
               {
-                !result && uploadedData && (current === "Route Analysis" || current === "Trip Analysis" || current === "User Behaviour" || current === "Forecasting") &&
+                !result && uploadedData && (current === "Route Analysis" || current === "Trip Analysis" || current === "User Behaviour") &&
                 <Form current={current} setLoading={setLoading} setResult={setResult} />
               }
               {
-                result && (
-                  <>
-                    <h1 className="text-2xl font-bold text-gray-900 mt-8 ml-8">Result</h1>
-                    {current === "Route Analysis" && (
-                      <>
-                        <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">most common pickup point:</h2>
-                        <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">{result.most_common_pu_zone}</h2>
-                        <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">most common drop off point:</h2>
-                        <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">{result.most_common_do_zone}</h2>
-                        <img src='http://localhost:8000/images/map.jpg' alt='map' className='w-1/2 h-1/2' />
-                        <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">top-k most common route:</h2>
-                        <div className='flex flex-col'>
-                          {result.most_common_routes.map((route, index) => (
-                            <h2 key={index} className="text-sm font-medium leading-7 text-gray-600 ml-8">
-                              {route}
-                            </h2>
-                          ))}
-                        </div>
-                        <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">top-k least common route:</h2>
-                        <div className='flex flex-col'>
-                          {result.least_common_routes.map((route, index) => (
-                            <h2 key={index} className="text-sm font-medium leading-7 text-gray-600 ml-8">
-                              {route}
-                            </h2>
-                          ))}
-                        </div>
-                        <img src='http://localhost:8000/images/traffic.jpg' alt='map' className='w-1/2 h-1/2' />
-                      </>
-                    )}
-                    {current === "Trip Analysis" && (
-                      <>
-                        <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">Daily aggregate revenue:</h2>
-                        <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">{result.aggregate_driver_pay}</h2>
-                        <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">Daily aggregate trip miles:</h2>
-                        <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">{result.aggregate_miles}</h2>
-                      </>
-                    )}
-                    {current === "User Behaviour" && (
-                      <>
-                        <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">Top-n peak traffic times:</h2>
-                        <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">most common pickup</h2>
-                      </>
-                    )}
-                  </>
-                )
+                !result2 && uploadedData && (current === "Forecasting") &&
+                <Form current={current} setLoading={setLoading} setResult={setResult2} />
               }
+              {result && (current !== "Forecasting" && current !== "Upload Data") && (
+                <>
+                  <h1 className="text-2xl font-bold text-gray-900 mt-8 ml-8">Result</h1>
+                  {current === "Route Analysis" && (
+                    <>
+                      <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">most common pickup point:</h2>
+                      <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">{result.most_common_pu_zone}</h2>
+                      <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">most common drop off point:</h2>
+                      <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">{result.most_common_do_zone}</h2>
+                      <img src='http://localhost:8000/images/map.jpg' alt='map' className='w-1/2 h-1/2' />
+                      <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">top-k most common route:</h2>
+                      <div className='flex flex-col'>
+                        {result.most_common_routes.map((route, index) => (
+                          <h2 key={index} className="text-sm font-medium leading-7 text-gray-600 ml-8">
+                            {route}
+                          </h2>
+                        ))}
+                      </div>
+                      <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">top-k least common route:</h2>
+                      <div className='flex flex-col'>
+                        {result.least_common_routes.map((route, index) => (
+                          <h2 key={index} className="text-sm font-medium leading-7 text-gray-600 ml-8">
+                            {route}
+                          </h2>
+                        ))}
+                      </div>
+                      <img src='http://localhost:8000/images/traffic.jpg' alt='map' className='w-1/2 h-1/2' />
+                    </>
+                  )}
+                  {current === "Trip Analysis" && (
+                    <>
+                      <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">Daily aggregate revenue:</h2>
+                      <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">{result.aggregate_driver_pay}</h2>
+                      <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">Daily aggregate trip miles:</h2>
+                      <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">{result.aggregate_miles}</h2>
+                    </>
+                  )}
+                  {current === "User Behaviour" && (
+                    <>
+                      <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">Top-n peak traffic times:</h2>
+                      <img src='http://localhost:8000/images/peak_traffic.jpg' alt='map' className='w-1/2 h-1/2' />
+                    </>
+                  )}
+                </>
+              )
+              }
+              {
+                result2 && (current === "Forecasting") && (
+                  <></>
+                )}
 
             </header>
           </main>
