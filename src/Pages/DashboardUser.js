@@ -37,7 +37,8 @@ const Form = ({ current, setLoading, setResult }) => {
         end_date: enddate,
         borough: selectedPlace,
         brand: selectedService,
-        k: 5
+        k: 5,
+        n: 5
       });
       setResult(response.data);
     } catch (error) {
@@ -172,7 +173,7 @@ export default function DashboardUser() {
                       <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">{result.most_common_pu_zone}</h2>
                       <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">most common drop off point:</h2>
                       <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">{result.most_common_do_zone}</h2>
-                      <img src='http://localhost:8000/images/map.jpg' alt='map' className='w-1/2 h-1/2' />
+                      <img src='http://localhost:8000/images/map.jpg?v=2' alt='map' className='w-1/2 h-1/2' />
                       <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">top-k most common route:</h2>
                       <div className='flex flex-col'>
                         {result.most_common_routes.map((route, index) => (
@@ -189,7 +190,7 @@ export default function DashboardUser() {
                           </h2>
                         ))}
                       </div>
-                      <img src='http://localhost:8000/images/traffic.jpg' alt='map' className='w-1/2 h-1/2' />
+                      <img src='http://localhost:8000/images/traffic.jpg?v=2' alt='map' className='w-1/2 h-1/2' />
                     </>
                   )}
                   {current === "Trip Analysis" && (
@@ -203,7 +204,14 @@ export default function DashboardUser() {
                   {current === "User Behaviour" && (
                     <>
                       <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">Top-n peak traffic times:</h2>
-                      <img src='http://localhost:8000/images/peak_traffic.jpg' alt='map' className='w-1/2 h-1/2' />
+                      <img src='http://localhost:8000/images/peak_traffic.jpg?v=2' alt='map' className='w-1/2 h-1/2' />
+                      <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">{result.title}:</h2>
+                      {result.data.map((item, index) => (
+                        <h2 key={index} className="text-sm font-medium leading-7 text-gray-600 ml-8">
+                          {item.Peak_Hours} : {item.Trip_Count}
+                        </h2>
+                      ))}
+
                     </>
                   )}
                 </>
