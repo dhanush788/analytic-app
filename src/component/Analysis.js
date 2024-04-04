@@ -1,4 +1,7 @@
 import React, { useRef, useState } from 'react';
+import { storage } from '../firebase/config';
+import { ref, uploadBytes } from "firebase/storage";
+
 
 const Analysis = ({ setUploadedData }) => {
     const [loading, setLoading] = useState(false);
@@ -27,8 +30,27 @@ const Analysis = ({ setUploadedData }) => {
         }
     };
 
-    const handleUpload = () => {
-        console.log('Uploading file:', selectedFile);
+    const handleUpload = async () => {
+        // Checking if a file is selected
+        if (!selectedFile) {
+            // If no file is selected, set an error message and exit the function
+            setFileError('Please select a file.');
+            return;
+        }
+    
+        // If a file is selected, set loading state to true
+        setLoading(true);
+    
+        // Creating a reference to the storage location where the file will be uploaded
+        const filesFolderRef = ref(storage, `files/${selectedFile.name}`);
+    
+        try {
+            // Uploading the file to the storage location
+            await uploadBytes(filesFolderRef, selectedFile);
+        } catch (err) {
+            // If an error occurs during the upload, log the error
+            console.error(err);
+        }
     };
 
     const handleSubmit = (e) => {
@@ -39,14 +61,18 @@ const Analysis = ({ setUploadedData }) => {
         }
         setLoading(true);
         setUploadedData(true);
+        handleUpload();
+        console.log('Form submitted successfully');
+        setLoading(false);
+        setResult(true);
 
         // Simulate loading for 10 seconds
-        setTimeout(() => {
-            // Handle form submission here
-            console.log('Form submitted successfully');
-            setLoading(false);
-            setResult(true);
-        }, 1000); // 10 seconds in milliseconds
+        // setTimeout(() => {
+        //     // Handle form submission here
+        //     console.log('Form submitted successfully');
+        //     setLoading(false);
+        //     setResult(true);
+        // }, 1000); // 10 seconds in milliseconds
     };
 
 
