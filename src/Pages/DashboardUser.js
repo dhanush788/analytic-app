@@ -54,7 +54,6 @@ const Form = ({ current, setLoading, setResult }) => {
     <>
       <h1 className="text-2xl font-bold text-gray-900 mt-8 ml-8">{current}</h1>
       <div className="mt-8 ml-8 flex flex-col">
-        <p className="text-gray-900">File is uploaded.</p><br /><br />
         <DateRangePicker
           ranges={[selectionRange]}
           onChange={handleSelect}
@@ -152,7 +151,6 @@ const Forecasting = ({ current, setLoading, setResult, csvData }) => {
     <>
       <h1 className="text-2xl font-bold text-gray-900 mt-8 ml-8">{current}</h1>
       <div className="mt-8 ml-8 flex flex-col">
-        <p className="text-gray-900">File is uploaded.</p><br /><br />
         <DateRangePicker
           ranges={[selectionRange]}
           onChange={handleSelect}
