@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-const SecNav = ({secondaryNavigation}) => {
+const SecNav = ({secondaryNavigation ,setCurrent , current}) => {
     return (
         <nav className="flex overflow-x-auto border-b border-white/10 py-4">
             <ul
@@ -9,7 +9,7 @@ const SecNav = ({secondaryNavigation}) => {
             >
                 {secondaryNavigation.map((item) => (
                     <li key={item.name}>
-                        <a href={item.href} className={item.current ? 'text-indigo-400' : ''}>
+                        <a href={item.href} className={(item.name === current) ? 'text-indigo-400' : ''} onClick={() => setCurrent(item.name)}>
                             {item.name}
                         </a>
                     </li>

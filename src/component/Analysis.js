@@ -21,8 +21,8 @@ const Analysis = ({ setUploadedData }) => {
         const file = event.target.files[0];
         if (file) {
             const fileType = file.name.split('.').pop();
-            if (fileType !== 'xlsx' && fileType !== 'xls') {
-                setFileError('Please select a .xls or .xlsx file.');
+            if (fileType !== 'xlsx' && fileType !== 'xls' && fileType !== 'parquet') {
+                setFileError('Please select a .xls or .xlsx file or .parquet file.');
             } else {
                 setSelectedFile(file);
                 setFileError('');
@@ -95,7 +95,7 @@ const Analysis = ({ setUploadedData }) => {
                                     <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-3/4 h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                                         <div className="flex flex-col items-center justify-center pt-5 pb-6">
                                             <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                                            <p className="text-xs text-gray-500 dark:text-gray-400">.xls or .xlsx files only</p>
+                                            <p className="text-xs text-gray-500 dark:text-gray-400">.xls or .xlsx or .parquet files only</p>
                                         </div>
                                         <input id="dropzone-file" type="file" className="hidden" accept=".xlsx,.xls" onChange={handleFileChange} />
                                     </label>

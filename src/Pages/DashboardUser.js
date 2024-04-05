@@ -7,6 +7,7 @@ import { DateRangePicker } from 'react-date-range'
 import axios from 'axios'
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
+import SecNav from '../component/SecNav'
 
 
 const Form = ({ current, setLoading, setResult }) => {
@@ -36,9 +37,9 @@ const Form = ({ current, setLoading, setResult }) => {
         start_date: startdate,
         end_date: enddate,
         borough: selectedPlace,
-        brand: selectedService,
-        k: 5,
-        n: 5
+        brand: 'Uber',
+        k: Math.floor(Math.random() * 5) + 3,
+        n: Math.floor(Math.random() * 5) + 3
       });
       setResult(response.data);
     } catch (error) {
@@ -75,7 +76,7 @@ const Form = ({ current, setLoading, setResult }) => {
             <option value="EWR">EWR</option>
           </select>
         </div>
-        <div className='flex gap-3'>
+        {/* <div className='flex gap-3'>
           <h2 className="text-base font-semibold leading-7 text-gray-900 capitalize my-auto">Pick a service</h2>
           <select
             value={selectedService}
@@ -86,7 +87,7 @@ const Form = ({ current, setLoading, setResult }) => {
             <option value="Uber">Uber</option>
             <option value="Lyft">Lyft</option>
           </select>
-        </div>
+        </div> */}
       </div>
       <div className="mt-6 flex items-center justify-end gap-x-6 mr-6">
         <button type="button" className="text-sm font-semibold leading-6 text-gray-900">
@@ -129,6 +130,13 @@ export default function DashboardUser() {
     })
   }, [navigation])
   console.log(result, "result")
+  const [navigation2, setNavigation2] = useState([
+    { name: 'Most common Pickup and Dropoff points', href: '#', current: true },
+    { name: 'K Most Common Route', href: '#', current: false },
+    { name: 'Traffic', href: '#', current: false },
+  ])
+  const [current1, setCurrent1] = useState(navigation2[0].name);
+
 
 
   return (
@@ -166,43 +174,63 @@ export default function DashboardUser() {
               }
               {result && (current !== "Forecasting" && current !== "Upload Data") && (
                 <>
-                  <h1 className="text-2xl font-bold text-gray-900 mt-8 ml-8">Result</h1>
                   {current === "Route Analysis" && (
                     <>
-                      <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">most common pickup point:</h2>
-                      <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">{result.most_common_pu_zone}</h2>
-                      <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">most common drop off point:</h2>
-                      <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">{result.most_common_do_zone}</h2>
+                      <SecNav secondaryNavigation={navigation2} setCurrent={setCurrent1} current={current1} />
+                      <h1 className="text-2xl font-bold text-gray-900 mt-8 ml-8">Result</h1>
+                      {
+                        current1 === "Most common Pickup and Dropoff points" && (
+                          <>
+                            <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">most common pickup point:</h2>
+                            <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">{result.most_common_pu_zone}</h2>
+                            <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">most common drop off point:</h2>
+                            <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">{result.most_common_do_zone}</h2>
+                          </>
+                        )
+                      }
+                      {
+                        current1 === "K Most Common Route" && (
+                          <>
+                            <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">top-k most common route:</h2>
+                            <div className='flex flex-col'>
+                              {result.most_common_routes.map((route, index) => (
+                                <h2 key={index} className="text-sm font-medium leading-7 text-gray-600 ml-8">
+                                  {route}
+                                </h2>
+                              ))}
+                            </div>
+                            <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">top-k least common route:</h2>
+                            <div className='flex flex-col'>
+                              {result.least_common_routes.map((route, index) => (
+                                <h2 key={index} className="text-sm font-medium leading-7 text-gray-600 ml-8">
+                                  {route}
+                                </h2>
+                              ))}
+                            </div>
+                          </>
+                        )
+                      }
+                      {
+                        current1 === "Traffic" && (
+                          <img src='http://localhost:8000/images/traffic.jpg?v=2' alt='map' className='w-1/2 h-1/2' />
+                        )
+                      }
                       <img src='http://localhost:8000/images/map.jpg?v=2' alt='map' className='w-1/2 h-1/2' />
-                      <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">top-k most common route:</h2>
-                      <div className='flex flex-col'>
-                        {result.most_common_routes.map((route, index) => (
-                          <h2 key={index} className="text-sm font-medium leading-7 text-gray-600 ml-8">
-                            {route}
-                          </h2>
-                        ))}
-                      </div>
-                      <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">top-k least common route:</h2>
-                      <div className='flex flex-col'>
-                        {result.least_common_routes.map((route, index) => (
-                          <h2 key={index} className="text-sm font-medium leading-7 text-gray-600 ml-8">
-                            {route}
-                          </h2>
-                        ))}
-                      </div>
-                      <img src='http://localhost:8000/images/traffic.jpg?v=2' alt='map' className='w-1/2 h-1/2' />
+
                     </>
                   )}
                   {current === "Trip Analysis" && (
                     <>
+                      <h1 className="text-2xl font-bold text-gray-900 mt-8 ml-8">Result</h1>
                       <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">Daily aggregate revenue:</h2>
-                      <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">{result.aggregate_driver_pay}</h2>
+                      <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">$ {result.aggregate_driver_pay}</h2>
                       <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">Daily aggregate trip miles:</h2>
-                      <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">{result.aggregate_miles}</h2>
+                      <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">$ {result.aggregate_miles}</h2>
                     </>
                   )}
                   {current === "User Behaviour" && (
                     <>
+                      <h1 className="text-2xl font-bold text-gray-900 mt-8 ml-8">Result</h1>
                       <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">Top-n peak traffic times:</h2>
                       <img src='http://localhost:8000/images/peak_traffic.jpg?v=2' alt='map' className='w-1/2 h-1/2' />
                       <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">{result.title}:</h2>
