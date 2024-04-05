@@ -8,6 +8,8 @@ import axios from 'axios'
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import SecNav from '../component/SecNav'
+import csvFile from '../firebase/2023.csv'
+import * as Papa from 'papaparse'; // Import PapaParse library
 
 
 const Form = ({ current, setLoading, setResult }) => {
@@ -45,9 +47,6 @@ const Form = ({ current, setLoading, setResult }) => {
     } catch (error) {
       setError(error.message);
     }
-
-    console.log("Start Date:", startdate);
-    console.log("End Date:", enddate);
     setLoading(false)
   }
 
@@ -104,6 +103,70 @@ const Form = ({ current, setLoading, setResult }) => {
   )
 }
 
+const Forecasting = ({ current, setLoading, setResult, csvData }) => {
+  const [selectionRange, setSelectionRange] = useState({
+    startDate: new Date(),
+    endDate: new Date(),
+    key: 'selection'
+  });
+  const [error, setError] = useState("")
+  const [selectedPlace, setSelectedPlace] = useState("Place1")
+  const handleSelect = (ranges) => {
+    setSelectionRange({
+      ...selectionRange,
+      ...ranges.selection
+    });
+    console.log(selectionRange)
+  };
+
+  const handleResult = async () => {
+    const startdate = selectionRange.startDate.toISOString().slice(0, 10).toString();
+    const enddate = selectionRange.endDate.toISOString().slice(0, 10).toString();
+    setLoading(true);
+  
+    setTimeout(async () => {
+      try {
+        const result = csvData.find(item => item[1] === startdate);
+        if (result) {
+          console.log(result, "item");
+          setResult(result);
+        } else {
+          console.log("No item found for the start date:", startdate);
+        }
+      } catch (error) {
+        setError(error.message);
+      }
+      setLoading(false);
+    }, 12000);
+  };
+  
+
+  return (
+    <>
+      <h1 className="text-2xl font-bold text-gray-900 mt-8 ml-8">{current}</h1>
+      <div className="mt-8 ml-8 flex flex-col">
+        <p className="text-gray-900">File is uploaded.</p><br /><br />
+        <DateRangePicker
+          ranges={[selectionRange]}
+          onChange={handleSelect}
+        />
+      </div>
+      <div className="mt-6 flex items-center justify-end gap-x-6 mr-6">
+        <button type="button" className="text-sm font-semibold leading-6 text-gray-900">
+          Cancel
+        </button>
+        <button
+          onClick={handleResult}
+          className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        >
+          Get Result
+        </button>
+      </div>
+    </>
+  )
+}
+
+
 
 
 function classNames(...classes) {
@@ -134,8 +197,33 @@ export default function DashboardUser() {
     { name: 'Most common Pickup and Dropoff points', href: '#', current: true },
     { name: 'K Most Common Route', href: '#', current: false },
     { name: 'Traffic', href: '#', current: false },
+    { name: 'Dataset View', href: '#', current: false }
   ])
   const [current1, setCurrent1] = useState(navigation2[0].name);
+  const [navigation3, setNavigation3] = useState([
+    { name: 'Top-N Peak Traffic Times', href: '#', current: true },
+    { name: 'Top-N Peak Traffic Hours', href: '#', current: false },
+  ])
+  const [current2, setCurrent2] = useState(navigation3[0].name);
+  const [csvData, setCsvData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(csvFile);
+        const text = await response.text();
+        const parsedData = Papa.parse(text).data;
+        setCsvData(parsedData);
+      } catch (error) {
+        console.error('Error fetching CSV:', error);
+      }
+    };
+
+
+    fetchData();
+  }, []);
+
+
 
 
 
@@ -170,14 +258,14 @@ export default function DashboardUser() {
               }
               {
                 !result2 && uploadedData && (current === "Forecasting") &&
-                <Form current={current} setLoading={setLoading} setResult={setResult2} />
+                <Forecasting current={current} setLoading={setLoading} setResult={setResult2} csvData={csvData} />
               }
               {result && (current !== "Forecasting" && current !== "Upload Data") && (
                 <>
                   {current === "Route Analysis" && (
                     <>
                       <SecNav secondaryNavigation={navigation2} setCurrent={setCurrent1} current={current1} />
-                      <h1 className="text-2xl font-bold text-gray-900 mt-8 ml-8">Result</h1>
+                      <h1 className="text-2xl font-bold text-gray-900 ml-8">Result</h1>
                       {
                         current1 === "Most common Pickup and Dropoff points" && (
                           <>
@@ -215,6 +303,37 @@ export default function DashboardUser() {
                           <img src='http://localhost:8000/images/traffic.jpg?v=2' alt='map' className='w-1/2 h-1/2' />
                         )
                       }
+                      {
+                        current1 === "Dataset View" && (
+                          <div className="overflow-x-auto m-10">
+                            <table className="table-auto w-full border-collapse border border-gray-300">
+                              <thead>
+                                <tr className="bg-gray-200">
+                                  <th className="border border-gray-300 px-4 py-2">Trip</th>
+                                  <th className="border border-gray-300 px-4 py-2">Pickup Location</th>
+                                  <th className="border border-gray-300 px-4 py-2">Dropoff Location</th>
+                                  <th className="border border-gray-300 px-4 py-2">Trip Miles</th>
+                                  <th className="border border-gray-300 px-4 py-2">Driver Pay</th>
+                                  <th className="border border-gray-300 px-4 py-2">Pickup Datetime</th>
+                                  <th className="border border-gray-300 px-4 py-2">Dropoff Datetime</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {result.filtered_data.map((trip, index) => (
+                                  <tr key={index}>
+                                    <td className="border border-gray-300 px-4 py-2">{index + 1}</td>
+                                    <td className="border border-gray-300 px-4 py-2">{trip.PUZone} ({trip.PUBorough})</td>
+                                    <td className="border border-gray-300 px-4 py-2">{trip.DOZone} ({trip.DOBorough})</td>
+                                    <td className="border border-gray-300 px-4 py-2">{trip.trip_miles}</td>
+                                    <td className="border border-gray-300 px-4 py-2">${trip.driver_pay}</td>
+                                    <td className="border border-gray-300 px-4 py-2">{trip.pickup_datetime}</td>
+                                    <td className="border border-gray-300 px-4 py-2">{trip.dropoff_datetime}</td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>)
+                      }
                       <img src='http://localhost:8000/images/map.jpg?v=2' alt='map' className='w-1/2 h-1/2' />
 
                     </>
@@ -230,16 +349,28 @@ export default function DashboardUser() {
                   )}
                   {current === "User Behaviour" && (
                     <>
-                      <h1 className="text-2xl font-bold text-gray-900 mt-8 ml-8">Result</h1>
-                      <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">Top-n peak traffic times:</h2>
-                      <img src='http://localhost:8000/images/peak_traffic.jpg?v=2' alt='map' className='w-1/2 h-1/2' />
-                      <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">{result.title}:</h2>
-                      {result.data.map((item, index) => (
-                        <h2 key={index} className="text-sm font-medium leading-7 text-gray-600 ml-8">
-                          {item.Peak_Hours} : {item.Trip_Count}
-                        </h2>
-                      ))}
-
+                      <SecNav secondaryNavigation={navigation3} setCurrent={setCurrent2} current={current2} />
+                      <h1 className="text-2xl font-bold text-gray-900 ml-8">Result</h1>
+                      {
+                        current2 === "Top-N Peak Traffic Times" && (
+                          <>
+                            <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">Top-n peak traffic times:</h2>
+                            <img src='http://localhost:8000/images/peak_traffic.jpg?v=2' alt='map' className='w-1/2 h-1/2' />
+                          </>
+                        )
+                      }
+                      {
+                        current2 === "Top-N Peak Traffic Hours" && (
+                          <>
+                            <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">{result.title}:</h2>
+                            {result.data.map((item, index) => (
+                              <h2 key={index} className="text-sm font-medium leading-7 text-gray-600 ml-8">
+                                {item.Peak_Hours} : {item.Trip_Count}
+                              </h2>
+                            ))}
+                          </>
+                        )
+                      }
                     </>
                   )}
                 </>
@@ -247,7 +378,9 @@ export default function DashboardUser() {
               }
               {
                 result2 && (current === "Forecasting") && (
-                  <></>
+                  <>
+
+                  </>
                 )}
 
             </header>
