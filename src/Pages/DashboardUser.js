@@ -123,15 +123,22 @@ const Forecasting = ({ current, setLoading, setResult, csvData }) => {
     const startdate = selectionRange.startDate.toISOString().slice(0, 10).toString();
     const enddate = selectionRange.endDate.toISOString().slice(0, 10).toString();
     setLoading(true);
-  
+
     setTimeout(async () => {
       try {
-        const result = csvData.find(item => item[1] === startdate);
-        if (result) {
-          console.log(result, "item");
+        const result = csvData.filter(item => {
+          const itemDate = new Date(item[1]); // Assuming the date is in the second column of each row
+          const startDate = new Date(startdate);
+          const endDate = new Date(enddate); // Assuming you have an end date
+
+          return itemDate >= startDate && itemDate <= endDate;
+        });
+
+        if (result.length > 0) {
+          console.log(result, "items between", startdate, "and", enddate);
           setResult(result);
         } else {
-          console.log("No item found for the start date:", startdate);
+          console.log("No items found between the start date:", startdate, "and the end date:", enddate);
         }
       } catch (error) {
         setError(error.message);
@@ -139,7 +146,7 @@ const Forecasting = ({ current, setLoading, setResult, csvData }) => {
       setLoading(false);
     }, 12000);
   };
-  
+
 
   return (
     <>
@@ -379,6 +386,32 @@ export default function DashboardUser() {
               {
                 result2 && (current === "Forecasting") && (
                   <>
+                    <h1 className="text-2xl font-bold text-gray-900 mt-8 ml-8">{current}</h1>
+                    <div className="overflow-x-auto m-10">
+                      <table className="table-auto w-full border-collapse border border-gray-300">
+                        <thead>
+                          <tr className="bg-gray-200">
+                            <th className="border border-gray-300 px-4 py-2">Date</th>
+                            <th className="border border-gray-300 px-4 py-2">PULocationID</th>
+                            <th className="border border-gray-300 px-4 py-2">DOLocationID</th>
+                            <th className="border border-gray-300 px-4 py-2">total_trip_miles</th>
+                            <th className="border border-gray-300 px-4 py-2">total_driver_pay</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {result2.map((trip, index) => (
+                            <tr key={index}>
+                              {
+                                trip.slice(1).map((item, index1) => (
+                                  <td key={index} className="border border-gray-300 px-4 py-2">{index1 === 4 ? `$ ${item}` : item}
+                                  </td>
+                                ))
+                              }
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
 
                   </>
                 )}

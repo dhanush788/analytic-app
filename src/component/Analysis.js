@@ -37,16 +37,19 @@ const Analysis = ({ setUploadedData }) => {
             setFileError('Please select a file.');
             return;
         }
-    
+
         // If a file is selected, set loading state to true
         setLoading(true);
-    
+
         // Creating a reference to the storage location where the file will be uploaded
         const filesFolderRef = ref(storage, `files/${selectedFile.name}`);
-    
+
         try {
             // Uploading the file to the storage location
             await uploadBytes(filesFolderRef, selectedFile);
+            setLoading(false);
+            console.log('Form submitted successfully');
+            setResult(true);
         } catch (err) {
             // If an error occurs during the upload, log the error
             console.error(err);
@@ -62,9 +65,6 @@ const Analysis = ({ setUploadedData }) => {
         setLoading(true);
         setUploadedData(true);
         handleUpload();
-        console.log('Form submitted successfully');
-        setLoading(false);
-        setResult(true);
 
         // Simulate loading for 10 seconds
         // setTimeout(() => {
