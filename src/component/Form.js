@@ -45,8 +45,8 @@ export default function Form() {
     };
 
     emailjs
-      .send('service_j7phaji', 'template_djttdck', data, {
-        publicKey: 'REIRbQwo-omARmAi5',
+      .send('service_mz0ca0g', 'template_9zfzg3j', data, {
+        publicKey: 'u6RNDGrMGKOT38jmM',
       })
       .then(
         () => {
@@ -74,7 +74,7 @@ export default function Form() {
           </div>
         )
       }
-      { error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative " role="alert">
+      {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative " role="alert">
         <strong className="font-bold">Error!</strong>
         <span className="block sm:inline"> {error}</span>
       </div>}
@@ -153,7 +153,7 @@ export default function Form() {
                     <label htmlFor="permission1" className="font-medium text-gray-900">
                       Tier 1
                     </label>
-                    <p className="text-gray-500">Read and write</p>
+                    <p className="text-gray-500">Allows both Analysis and Forecasting</p>
                   </div>
                 </div>
                 <div className="relative flex gap-x-3">
@@ -171,7 +171,7 @@ export default function Form() {
                     <label htmlFor="permission2" className="font-medium text-gray-900">
                       Tier 2
                     </label>
-                    <p className="text-gray-500">Read only</p>
+                    <p className="text-gray-500">Allows Analysis Only</p>
                   </div>
                 </div>
                 <div className="relative flex gap-x-3">
@@ -189,7 +189,7 @@ export default function Form() {
                     <label htmlFor="permission3" className="font-medium text-gray-900">
                       Tier 3
                     </label>
-                    <p className="text-gray-500">No access</p>
+                    <p className="text-gray-500">Allows Forecasting Only</p>
                   </div>
                 </div>
               </div>
