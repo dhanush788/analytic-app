@@ -211,6 +211,12 @@ export default function DashboardUser() {
   ])
   const [current2, setCurrent2] = useState(navigation3[0].name);
   const [csvData, setCsvData] = useState(null);
+  const [navigation4, setNavigation4] = useState([
+    { name: 'Forecasted Data', href: '#', current: true },
+    { name: 'Forecasted Revenue', href: '#', current: false },
+    { name: 'Forecasted Miles', href: '#', current: false },
+  ])
+  const [current4, setCurrent4] = useState(navigation4[0].name);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -384,33 +390,46 @@ export default function DashboardUser() {
               {
                 result2 && (current === "Forecasting") && (
                   <>
+                    <SecNav secondaryNavigation={navigation4} setCurrent={setCurrent4} current={current4} />
                     <h1 className="text-2xl font-bold text-gray-900 mt-8 ml-8">{current}</h1>
-                    <div className="overflow-x-auto m-10">
-                      <table className="table-auto w-full border-collapse border border-gray-300">
-                        <thead>
-                          <tr className="bg-gray-200">
-                            <th className="border border-gray-300 px-4 py-2">Date</th>
-                            <th className="border border-gray-300 px-4 py-2">PULocationID</th>
-                            <th className="border border-gray-300 px-4 py-2">DOLocationID</th>
-                            <th className="border border-gray-300 px-4 py-2">total_trip_miles</th>
-                            <th className="border border-gray-300 px-4 py-2">total_driver_pay</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {result2.map((trip, index) => (
-                            <tr key={index}>
-                              {
-                                trip.slice(1).map((item, index1) => (
-                                  <td key={index} className="border border-gray-300 px-4 py-2">{index1 === 4 ? `$ ${item}` : item}
-                                  </td>
-                                ))
-                              }
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-
+                    {
+                      current4 === "Forecasted Data" && (
+                        <div className="overflow-x-auto m-10">
+                          <table className="table-auto w-full border-collapse border border-gray-300">
+                            <thead>
+                              <tr className="bg-gray-200">
+                                <th className="border border-gray-300 px-4 py-2">Date</th>
+                                <th className="border border-gray-300 px-4 py-2">PULocationID</th>
+                                <th className="border border-gray-300 px-4 py-2">DOLocationID</th>
+                                <th className="border border-gray-300 px-4 py-2">total_trip_miles</th>
+                                <th className="border border-gray-300 px-4 py-2">total_driver_pay</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {result2.map((trip, index) => (
+                                <tr key={index}>
+                                  {
+                                    trip.slice(1).map((item, index1) => (
+                                      <td key={index} className="border border-gray-300 px-4 py-2">{index1 === 4 ? `$ ${item}` : item}
+                                      </td>
+                                    ))
+                                  }
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      )}
+                      {
+                        current4 === "Forecasted Revenue" && (
+                          <img src='http://localhost:8000/images/2023_revenue_forecasted.png?v=2' alt='map' className='w-1/2 h-1/2' />
+                        )
+                      }
+                      {
+                        current4 === "Forecasted Miles" && (
+                          <img src='http://localhost:8000/images/2023_tripmiles_forecasted.png?v=2' alt='map' className='w-1/2 h-1/2' />
+                        )
+                      }
                   </>
                 )}
 
