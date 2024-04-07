@@ -355,7 +355,7 @@ export default function DashboardUser() {
                       <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">Daily aggregate revenue:</h2>
                       <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">$ {result.aggregate_driver_pay}</h2>
                       <h2 className="text-base font-semibold leading-7 text-gray-900 mt-3 ml-8 capitalize">Daily aggregate trip miles:</h2>
-                      <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">$ {result.aggregate_miles}</h2>
+                      <h2 className="text-sm font-medium leading-7 text-gray-600 ml-8 ">{result.aggregate_miles}</h2>
                     </>
                   )}
                   {current === "User Behaviour" && (
